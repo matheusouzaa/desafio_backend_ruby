@@ -1,0 +1,137 @@
+<%= form_with(model: [@municipe], local: true) do |form| %>
+
+  <% if municipe.errors.any? %>
+    <div style="color: red">
+      <h2><%= pluralize(municipe.errors.count, "error") %> prohibited this municipe from being saved:</h2>
+      <ul>
+        <% municipe.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="divCaixa">
+    <div class="divCaixa">
+      <h3>Informações do Municipe</h3>
+    </div>
+    <div class="divCaixa">
+      <h4>Dados Pessoais</h4>
+      <div class="mb-3">
+        <%= form.label :nome_completo, { class: "form-label"} %>
+        <%= form.text_field :nome_completo, { class: "form-control", placeholder: "Nome Completo" } %>
+      </div>
+      <div class="mb-3">
+        <%= form.label :cpf, { class: "form-label"} %>
+        <%= form.text_field :cpf, { class: "form-control", placeholder: "CPF", id: "cpf_field" } %>
+      </div>
+      <div class="mb-3">
+        <%= form.label :cns, { class: "form-label"} %>
+        <%= form.text_field :cns, { class: "form-control", placeholder: "CNS" } %>
+      </div>
+      <div class="mb-3">
+        <%= form.label :email, { class: "form-label"} %>
+        <%= form.text_field :email, { class: "form-control", placeholder: "Email" } %>
+      </div>
+      <div class="mb-3">
+        <%= form.label :data_nascimento, { class: "form-label"} %>
+        <%= form.date_field :data_nascimento, { class: "form-control"} %>
+      </div>
+      <div class="mb-3">
+        <%= form.label :telefone, { class: "form-label"} %>
+        <%= form.text_field :telefone, { class: "form-control", placeholder: "Telefone", id: "telefone_field"  } %>
+      </div>
+      <div class="mb-3">
+        <%= form.label :status, style: "display: block" %>
+        <%= form.select(:status, Municipe.statuses.map {|key, value| [key.humanize, value] }) %>
+      </div>
+    </div>
+
+    <div class="divCaixa">
+      <h4>Endereço do Municipe</h4>
+      <%= form.fields_for :endereco  do |endereco_form| %>
+        <div class="mb-3">
+          <%= endereco_form.label :cep, { class: "form-label"} %>
+          <%= endereco_form.text_field :cep, { class: "form-control cep-input", placeholder: "CEP" } %>
+        </div>
+        <div class="mb-3">
+          <%= endereco_form.label :logradouro, { class: "form-label"} %>
+          <%= endereco_form.text_field :logradouro, { class: "form-control", placeholder: "Logradouro" } %>
+        </div>
+        <div class="mb-3">
+          <%= endereco_form.label :complemento, { class: "form-label"} %>
+          <%= endereco_form.text_field :complemento, { class: "form-control", placeholder: "Complemento" } %>
+        </div>
+        <div class="mb-3">
+          <%= endereco_form.label :bairro, { class: "form-label"} %>
+          <%= endereco_form.text_field :bairro, { class: "form-control", placeholder: "Bairro" } %>
+        </div>
+        <div class="mb-3">
+          <%= endereco_form.label :cidade, { class: "form-label"} %>
+          <%= endereco_form.text_field :cidade, { class: "form-control", placeholder: "Cidade" } %>
+        </div>
+        <div class="mb-3">
+          <%= endereco_form.label :uf, { class: "form-label"} %>
+          <%= endereco_form.text_field :uf, { class: "form-control", placeholder: "UF" } %>
+        </div>
+        <div class="mb-3">
+          <%= endereco_form.label :codigo_ibge, { class: "form-label"} %>
+          <%= endereco_form.text_field :codigo_ibge, { class: "form-control", placeholder: "Codigo Ibge" } %>
+        </div>
+      <%end %>
+    </div>
+    <%= form.submit "Salvar", class: "btn btn-primary" %>
+    <%= link_to "Voltar", municipes_path, {class: "btn btn-secondary"} %>
+  </div>
+
+<% end %>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+    $(document).ready(function() {
+        // Script para formatar o CPF
+        $('#cpf_field').on('input', function() {
+            let cpf = $(this).val().replace(/\D/g, ''); // Remove tudo que não é dígito
+
+            if (cpf.length === 11) {
+                cpf = cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4');
+            } else if (cpf.length > 11) {
+                cpf = cpf.slice(0, 11); // Limita a 11 dígitos
+            }
+
+            $(this).val(cpf);
+        });
+
+        // Script para formatar TELEFONE
+        $('#telefone_field').on('input', function() {
+            let telefone = $(this).val().replace(/\D/g, ''); // Remove tudo que não é dígito
+
+            if (telefone.length === 11) {
+                telefone = telefone.replace(/(\d{2})(\d{5})(\d{4})/, '($1) $2-$3');
+            } else if (telefone.length === 10) {
+                telefone = telefone.replace(/(\d{2})(\d{4})(\d{4})/, '($1) $2-$3');
+            } else if (telefone.length === 9) {
+                telefone = telefone.replace(/(\d{1})(\d{4})(\d{4})/, '($1$2-$3');
+            } else if (telefone.length > 11) {
+                telefone = telefone.slice(0, 11); // Limita a 11 dígitos
+            }
+
+            $(this).val(telefone);
+        });
+
+        // Script para formatar o CEP
+        $('.cep-input').on('input', function() {
+            // Remove todos os caracteres não numéricos
+            let cep = $(this).val().replace(/\D/g, '');
+
+            // Formata o CEP adicionando traços
+            if (cep.length > 5) {
+                cep = cep.substring(0, 5) + '-' + cep.substring(5);
+            }
+
+            // Define o valor formatado de volta no campo de entrada
+            $(this).val(cep);
+        });
+    });
+</script>

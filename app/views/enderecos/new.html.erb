@@ -1,0 +1,13 @@
+<div class="container">
+  <p aria-hidden="true">
+  <h1>Endereco</h1>
+    <span class="placeholder col-6"></span>
+  </p>
+
+  <%= render "form", endereco: @endereco %>
+</div>
+<div>
+  <%= link_to "Voltar", enderecos_path, {class: "btn btn-secondary"} %>
+</div>
+
+

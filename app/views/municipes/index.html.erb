@@ -1,0 +1,69 @@
+<p style="color: green"><%= notice %></p>
+  <div class="divCaixa">
+    <div class="divCaixa">
+      <h1>Listagem de Munícipes</h1>
+    </div>
+
+    <div class="divCaixa">
+      <h5>Filtragem de Munícipes</h5>
+
+      <%= form_tag(municipes_path, method: :get) do %>
+
+        <div class="form-group mb-3">
+          <%= text_field_tag "filtro[nome_completo]", params[:filtro].try(:[],:nome_completo), class: "form-control", placeholder: "Nome Completo" %>
+        </div>
+        <div class="form-group mb-3">
+          <%= text_field_tag "filtro[cpf]", params[:filtro].try(:[],:cpf), class: "form-control", placeholder: "CPF" %>
+        </div>
+        <div class="form-group mb-3">
+          <%= text_field_tag "filtro[cns]", params[:filtro].try(:[],:cns), class: "form-control", placeholder: "CNS" %>
+        </div>
+        <div class="form-group mb-3">
+          <%= text_field_tag "filtro[telefone]", params[:filtro].try(:[],:telefone), class: "form-control", placeholder: "Telefone" %>
+        </div>
+        <div class="form-group mb-3">
+          <%= text_field_tag "filtro[email]", params[:filtro].try(:[],:email), class: "form-control", placeholder: "Email" %>
+        </div>
+
+        <%= submit_tag "Filtrar", class: "btn btn-primary" %>
+      <% end %>
+    </div>
+
+    <div class="divCaixa">
+      <table class="table table-striped">
+        <thead>
+        <tr>
+          <th>Nome Completo</th>
+          <th>CPF</th>
+          <th>CNS</th>
+          <th>Data Nascimento</th>
+          <th>Telefone</th>
+          <th>Email</th>
+          <th>Status</th>
+          <th>Ações</th>
+        </tr>
+        </thead>
+        <tbody>
+        <% @municipes.each do |municipe| %>
+          <tr>
+            <td><%= municipe.nome_completo %></td>
+            <td><%= municipe.formatted_cpf %></td>
+            <td><%= municipe.cns %></td>
+            <td><%= municipe.formatted_data_nascimento %></td>
+            <td><%= municipe.formatted_telefone %></td>
+            <td><%= municipe.email %></td>
+            <td><%= municipe.formatted_status %></td>
+            <td>
+              <%= link_to 'Editar', edit_municipe_path(municipe), { class: "btn btn-warning" } %>
+              <%= link_to 'Visualizar', municipe_path(municipe), { class: "btn btn-warning" } %>
+            </td>
+          </tr>
+        <% end %>
+        </tbody>
+      </table>
+    </div>
+
+    <%= link_to 'Novo Munícipe', new_municipe_path, {class: "btn btn-primary"}  %>
+</div>
+
+

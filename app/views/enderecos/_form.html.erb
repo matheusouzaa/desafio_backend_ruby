@@ -1,0 +1,57 @@
+<!--<div class="container-flouid">-->
+<!--  <nav class="navbar navbar-expand-lg bg-light">-->
+<!--    <div class="container">-->
+      <%= form_with(model: endereco) do |form| %>
+        <% if endereco.errors.any? %>
+          <div style="color: red">
+            <h2><%= pluralize(endereco.errors.count, "error") %> prohibited this endereco from being saved:</h2>
+
+            <ul>
+              <% endereco.errors.each do |error| %>
+                <li><%= error.full_message %></li>
+              <% end %>
+            </ul>
+          </div>
+        <% end %>
+
+        <div class="mb-3">
+          <%= form.label :cep, { class: "form-label"} %>
+          <%= form.text_field :cep, { class: "form-control", placeholder: "CEP" } %>
+        </div>
+
+        <div class="mb-3">
+          <%= form.label :logradouro, { class: "form-label"} %>
+          <%= form.text_field :logradouro, { class: "form-control", placeholder: "Logradouro" } %>
+        </div>
+
+        <div class="mb-3">
+          <%= form.label :complemento, { class: "form-label"} %>
+          <%= form.text_field :complemento, { class: "form-control", placeholder: "Complemento" } %>
+        </div>
+
+        <div class="mb-3">
+          <%= form.label :bairro, { class: "form-label"} %>
+          <%= form.text_field :bairro, { class: "form-control", placeholder: "Bairro" } %>
+        </div>
+
+        <div class="mb-3">
+          <%= form.label :uf, { class: "form-label"} %>
+          <%= form.text_field :uf, { class: "form-control", placeholder: "UF" } %>
+        </div>
+
+        <div class="mb-3">
+          <%= form.label :codigo_ibge, { class: "form-label"} %>
+          <%= form.text_field :codigo_ibge, { class: "form-control", placeholder: "Codigo Ibge" } %>
+        </div>
+
+        <div class="mb-3">
+          <%= form.label :municipe_id, { class: "form-label"} %>
+          <%= form.text_field :municipe_id, { class: "form-control", placeholder: "Municipe" } %>
+        </div>
+
+        <%= form.submit "Salvar", class: "btn btn-primary" %>
+      <% end %>
+
+<!--    </div>-->
+<!--  </nav>-->
+<!--</div>-->
